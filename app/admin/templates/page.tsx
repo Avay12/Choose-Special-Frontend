@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Loader2, Pencil, Plus, Save, Shapes, Trash2, X } from "lucide-react";
+import { Eye, Loader2, Pencil, Plus, Save, Shapes, Trash2, X } from "lucide-react";
 import api from "@/lib/api";
 import { toast } from "sonner";
+import { TEMPLATE_COMPONENTS } from "@/components/templates";
+import DynamicTemplateRenderer from "@/components/templates/DynamicTemplateRenderer";
 
 type AdminTemplate = {
   id: number;
@@ -73,6 +75,7 @@ export default function AdminTemplatesPage() {
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [editingTemplateId, setEditingTemplateId] = useState<number | null>(null);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+  const [previewTemplate, setPreviewTemplate] = useState<AdminTemplate | null>(null);
   const [form, setForm] = useState<TemplateFormState>(INITIAL_FORM);
 
   const fetchTemplates = async () => {
@@ -201,6 +204,25 @@ export default function AdminTemplatesPage() {
     }
   };
 
+  const getPreviewData = (template: AdminTemplate): Record<string, unknown> => {
+    try {
+      const parsed = JSON.parse(template.layout_json) as {
+        defaults?: Record<string, unknown>;
+      };
+      return parsed.defaults || {};
+    } catch {
+      return {};
+    }
+  };
+
+  const getPreviewLayout = (template: AdminTemplate): Record<string, unknown> => {
+    try {
+      return JSON.parse(template.layout_json) as Record<string, unknown>;
+    } catch {
+      return {};
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -284,6 +306,13 @@ export default function AdminTemplatesPage() {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1">
+                        <button
+                          onClick={() => setPreviewTemplate(template)}
+                          className="p-2 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                          title="Preview template"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
                         <button
                           onClick={() => openEditModal(template)}
                           className="p-2 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
@@ -494,6 +523,48 @@ export default function AdminTemplatesPage() {
                 )}
                 {editingTemplateId ? "Update Template" : "Create Template"}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {previewTemplate && (
+        <div className="fixed inset-0 z-[75] flex items-center justify-center p-4">
+          <button
+            type="button"
+            aria-label="Close template preview"
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setPreviewTemplate(null)}
+          />
+          <div className="relative z-10 w-full max-w-md bg-card rounded-2xl border border-border shadow-xl p-5">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Template Preview</h3>
+                <p className="text-xs text-muted-foreground font-mono mt-1">
+                  {previewTemplate.slug}
+                </p>
+              </div>
+              <button
+                onClick={() => setPreviewTemplate(null)}
+                className="p-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="rounded-2xl overflow-hidden border border-border bg-muted/30">
+              {TEMPLATE_COMPONENTS[previewTemplate.slug] ? (
+                (() => {
+                  const Component = TEMPLATE_COMPONENTS[previewTemplate.slug];
+                  return <Component {...getPreviewData(previewTemplate)} />;
+                })()
+              ) : (
+                <DynamicTemplateRenderer
+                  templateName={previewTemplate.name}
+                  layout={getPreviewLayout(previewTemplate)}
+                  data={getPreviewData(previewTemplate)}
+                />
+              )}
             </div>
           </div>
         </div>

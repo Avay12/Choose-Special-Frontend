@@ -35,10 +35,7 @@ export default function Navbar() {
 
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
-  const [isMounted, setIsMounted] = useState(false);
-
   useEffect(() => {
-    setIsMounted(true);
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
@@ -109,7 +106,7 @@ export default function Navbar() {
           >
             <Search className="w-5 h-5" />
           </button>
-          {isMounted && user && (
+          {user && (
             <>
               <Link
                 href="/favorites"
