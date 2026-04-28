@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, ArrowRight, Sparkles, Tag } from "lucide-react";
 import { useStore } from "@/store/useStore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { TEMPLATES } from "@/lib/data/template";
+import { useTemplates } from "@/lib/hooks/useTemplates";
 
 // ─── Build a flat, searchable list of occasions + templates ──────────────────
 
@@ -21,6 +21,13 @@ interface SearchItem {
   href: string;
   emoji: string;
 }
+
+type TemplateIndexItem = {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+};
 
 const OCCASION_EMOJIS: Record<string, string> = {
   anniversary: "💍",
@@ -58,11 +65,12 @@ const OCCASION_LABELS: Record<string, string> = {
   dussehra: "Dussehra",
 };
 
-// Build the flat search index from TEMPLATES
-const buildSearchIndex = (): SearchItem[] => {
+const buildSearchIndex = (
+  groupedByCategory: Record<string, Record<string, TemplateIndexItem>>,
+): SearchItem[] => {
   const items: SearchItem[] = [];
 
-  Object.entries(TEMPLATES).forEach(([slug, templates]) => {
+  Object.entries(groupedByCategory).forEach(([slug, templates]) => {
     const label = OCCASION_LABELS[slug] ?? slug;
     const emoji = OCCASION_EMOJIS[slug] ?? "🎴";
 
@@ -94,8 +102,6 @@ const buildSearchIndex = (): SearchItem[] => {
   return items;
 };
 
-const SEARCH_INDEX = buildSearchIndex();
-
 // Popular occasions to show when query is empty
 const POPULAR_OCCASIONS = [
   { slug: "birthday", label: "Birthday", emoji: "🎂" },
@@ -112,15 +118,25 @@ const POPULAR_OCCASIONS = [
 
 export default function SearchModal() {
   const { isSearchOpen, setSearchOpen } = useStore();
+  const { groupedByCategory } = useTemplates();
   const [query, setQuery] = useState("");
-  const [focused, setFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+
+  const handleClose = useCallback(() => {
+    setSearchOpen(false);
+    setQuery("");
+  }, [setSearchOpen]);
+
+  const searchIndex = useMemo(
+    () => buildSearchIndex(groupedByCategory),
+    [groupedByCategory],
+  );
 
   // Filter results based on query
   const results =
     query.trim().length >= 1
-      ? SEARCH_INDEX.filter((item) => {
+      ? searchIndex.filter((item) => {
           const q = query.toLowerCase();
           return (
             item.occasionLabel.toLowerCase().includes(q) ||
@@ -141,7 +157,7 @@ export default function SearchModal() {
     };
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
-  }, []);
+  }, [handleClose]);
 
   // Focus input when modal opens
   useEffect(() => {
@@ -151,11 +167,6 @@ export default function SearchModal() {
       setQuery("");
     }
   }, [isSearchOpen]);
-
-  const handleClose = useCallback(() => {
-    setSearchOpen(false);
-    setQuery("");
-  }, [setSearchOpen]);
 
   const handleNavigate = useCallback(
     (href: string) => {
@@ -218,8 +229,6 @@ export default function SearchModal() {
                 placeholder="Search occasions, templates..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                onFocus={() => setFocused(true)}
-                onBlur={() => setFocused(false)}
                 className="w-full bg-card border-2 border-border rounded-full py-4 pl-14 pr-14 text-lg font-medium placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-all shadow-xl shadow-black/5"
               />
               {query && (

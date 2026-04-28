@@ -15,6 +15,7 @@ import {
   X,
   Users,
   ShoppingBag,
+  Shapes,
 } from "lucide-react";
 import { useState } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -53,6 +54,7 @@ export default function AdminLayout({
     { name: "Users", href: "/admin/users", icon: Users },
     { name: "Orders", href: "/admin/orders", icon: ShoppingBag },
     { name: "Cards", href: "/admin/cards", icon: PlusSquare },
+    { name: "Templates", href: "/admin/templates", icon: Shapes },
     { name: "Create Link", href: "/admin/links/create", icon: LinkIcon },
     { name: "Manage Site", href: "/admin/manage", icon: Settings },
   ];

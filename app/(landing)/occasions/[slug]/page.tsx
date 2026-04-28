@@ -5,15 +5,16 @@ import ProductCard, { Product } from "@/components/ProductCard";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, SlidersHorizontal, LayoutGrid, List } from "lucide-react";
-import { TEMPLATES } from "@/lib/data/template";
 import { useState } from "react";
 import CustomSelect from "@/components/common/CustomSelect";
+import { useTemplates } from "@/lib/hooks/useTemplates";
 
 export default function CategoryPage() {
   const params = useParams();
   const slug = params.slug as string;
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState("featured");
+  const { groupedByCategory } = useTemplates();
 
   const sortOptions = [
     { value: "featured", label: "Sort by: Featured" },
@@ -27,19 +28,18 @@ export default function CategoryPage() {
     : "Category";
 
   // Get templates for this category
-  const categoryTemplates = TEMPLATES[slug as keyof typeof TEMPLATES] || {};
-  const templatesArray: Product[] = Object.values(categoryTemplates).map(
-    (template: any) => ({
-      id: template.id,
-      title: template.name,
-      price: template.price,
-      image: template.image,
-      component: template.component,
-      category: categoryName,
-      isNew: template.isNew,
-      isBestseller: template.isBestseller,
-    }),
-  );
+  const categoryTemplates = groupedByCategory[slug] || {};
+  const templatesArray: Product[] = Object.values(categoryTemplates).map((template) => ({
+    id: template.id,
+    title: template.name,
+    price: template.price,
+    image: template.image,
+    component: template.component,
+    defaults: template.defaults,
+    category: categoryName,
+    isNew: template.isNew,
+    isBestseller: template.isBestseller,
+  }));
 
   return (
     <div className="container mx-auto px-4 py-8 md:py-12">

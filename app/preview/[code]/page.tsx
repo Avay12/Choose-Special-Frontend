@@ -10,10 +10,13 @@ import api from "@/lib/api";
 import { AudioPlayerBar } from "@/components/templates/AudioPicker";
 import { BACKGROUND_SCENES } from "@/lib/data/backgrounds";
 import { SceneBackground } from "@/components/templates/SceneBackground";
+import { useTemplates } from "@/lib/hooks/useTemplates";
+import DynamicTemplateRenderer from "@/components/templates/DynamicTemplateRenderer";
 
 export default function PreviewPage() {
   const params = useParams();
   const code = params.code as string;
+  const { templates } = useTemplates();
 
   const [dbData, setDbData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -86,6 +89,7 @@ export default function PreviewPage() {
   }
 
   const TemplateComponent = (TEMPLATE_COMPONENTS as any)[dbData.id];
+  const matchedTemplate = templates.find((template) => template.id === dbData.id);
   const audioUrl = dbData.fields?.audioUrl;
   const trackName = dbData.fields?.audioTrackName;
   const sceneId = dbData.fields?.bgSceneId || "none";
@@ -113,9 +117,11 @@ export default function PreviewPage() {
           {TemplateComponent ? (
             <TemplateComponent {...dbData.fields} />
           ) : (
-            <div className="bg-card p-16 text-center text-muted-foreground">
-              No preview available
-            </div>
+            <DynamicTemplateRenderer
+              templateName={matchedTemplate?.name || "Dynamic Template"}
+              layout={matchedTemplate?.layout}
+              data={dbData.fields || {}}
+            />
           )}
         </div>
 

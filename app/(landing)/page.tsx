@@ -5,44 +5,39 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Star } from "lucide-react";
 import Link from "next/link";
 import ProductCard, { Product } from "@/components/ProductCard";
-import { TEMPLATES } from "@/lib/data/template";
+import { useTemplates } from "@/lib/hooks/useTemplates";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("All");
+  const { templates } = useTemplates();
 
-  // Flatten all templates into a single products array for the landing page
   const allTemplates = useMemo(() => {
-    const products: Product[] = [];
-    for (const category in TEMPLATES) {
-      const templates = TEMPLATES[category as keyof typeof TEMPLATES];
-      for (const id in templates) {
-        const t = templates[id];
-        products.push({
-          id: t.id,
-          title: t.name,
-          price: t.price,
-          image: t.image,
-          component: t.component,
-          category: category
-            .replace(/-/g, " ")
-            .replace(/\b\w/g, (c) => c.toUpperCase()),
-          isNew: t.isNew,
-          isBestseller: t.isBestseller,
-        });
-      }
-    }
-    return products;
-  }, []);
+    return templates.map(
+      (t): Product => ({
+        id: t.id,
+        title: t.name,
+        price: t.price,
+        image: t.image,
+        component: t.component,
+        defaults: t.defaults,
+        category: t.categorySlug
+          .replace(/-/g, " ")
+          .replace(/\b\w/g, (c) => c.toUpperCase()),
+        isNew: t.isNew,
+        isBestseller: t.isBestseller,
+      }),
+    );
+  }, [templates]);
 
   const CATEGORY_TABS = useMemo(() => {
     const categories = [
       "All",
-      ...Object.keys(TEMPLATES).map((c) =>
+      ...Array.from(new Set(templates.map((t) => t.categorySlug))).map((c) =>
         c.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
       ),
     ];
     return categories;
-  }, []);
+  }, [templates]);
 
   const filteredProducts = useMemo(() => {
     return activeTab === "All"

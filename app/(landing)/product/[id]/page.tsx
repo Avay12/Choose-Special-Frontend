@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
@@ -11,7 +10,6 @@ import {
   Heart,
   Share2,
   ShieldQuestion,
-  Star,
   Truck,
   Edit3,
   Eye,
@@ -19,9 +17,7 @@ import {
   Loader2,
   PlayCircle,
   X,
-  Volume2,
 } from "lucide-react";
-import { TEMPLATES, TemplateMetadata } from "@/lib/data/template";
 import { TEMPLATE_COMPONENTS } from "@/components/templates";
 import { useStore } from "@/store/useStore";
 import { useAuthStore } from "@/store/authStore";
@@ -34,10 +30,14 @@ import BackgroundPicker from "@/components/templates/BackgroundPicker";
 import { BACKGROUND_SCENES } from "@/lib/data/backgrounds";
 import { SceneBackground } from "@/components/templates/SceneBackground";
 import { cn } from "@/lib/utils";
+import { useTemplates } from "@/lib/hooks/useTemplates";
+import DynamicTemplateRenderer from "@/components/templates/DynamicTemplateRenderer";
 
 // ─── Demo Preview Modal ───────────────────────────────────────────────────────
 function DemoModal({
   templateId,
+  templateName,
+  layout,
   customData,
   audioUrl,
   trackName,
@@ -45,6 +45,8 @@ function DemoModal({
   onClose,
 }: {
   templateId: string;
+  templateName: string;
+  layout?: Record<string, unknown>;
   customData: Record<string, any>;
   audioUrl: string | null;
   trackName?: string;
@@ -93,9 +95,11 @@ function DemoModal({
           {TemplateComponent ? (
             <TemplateComponent {...(customData as any)} />
           ) : (
-            <div className="bg-white p-16 text-center text-muted-foreground">
-              No preview available
-            </div>
+            <DynamicTemplateRenderer
+              templateName={templateName}
+              layout={layout}
+              data={customData}
+            />
           )}
         </div>
 
@@ -129,6 +133,7 @@ export default function ProductPage() {
   const router = useRouter();
   const { user } = useAuthStore();
   const { addToCart } = useStore();
+  const { templates } = useTemplates();
 
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
@@ -188,19 +193,15 @@ export default function ProductPage() {
   };
 
   const productData = useMemo(() => {
-    for (const category in TEMPLATES) {
-      const templates = TEMPLATES[category as keyof typeof TEMPLATES];
-      if (templates[id as keyof typeof templates]) {
-        return {
-          ...templates[id as keyof typeof templates],
-          category: category
-            .replace(/-/g, " ")
-            .replace(/\b\w/g, (c) => c.toUpperCase()),
-        } as TemplateMetadata & { category: string };
-      }
-    }
-    return null;
-  }, [id]);
+    const matched = templates.find((template) => template.id === id);
+    if (!matched) return null;
+    return {
+      ...matched,
+      category: matched.categorySlug
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, (c) => c.toUpperCase()),
+    };
+  }, [templates, id]);
 
   const [customData, setCustomData] = useState<Record<string, any>>({});
 
@@ -315,14 +316,11 @@ export default function ProductPage() {
                     {TemplateComponent ? (
                       <TemplateComponent {...(customData as any)} />
                     ) : (
-                      <div className="w-full h-full bg-muted rounded-[3rem] flex items-center justify-center border-8 border-white shadow-2xl overflow-hidden">
-                        <Image
-                          src={productData.image || ""}
-                          alt={productData.name}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
+                      <DynamicTemplateRenderer
+                        templateName={productData.name}
+                        layout={productData.layout}
+                        data={customData}
+                      />
                     )}
 
                     {/* Audio badge on preview */}
@@ -651,6 +649,8 @@ export default function ProductPage() {
         {showDemo && (
           <DemoModal
             templateId={id}
+            templateName={productData.name}
+            layout={productData.layout}
             customData={customData}
             audioUrl={customData.audioUrl || null}
             trackName={customData.audioTrackName}

@@ -37,7 +37,6 @@ import { useStore } from "@/store/useStore";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { TEMPLATES, TemplateMetadata } from "@/lib/data/template";
 import { TEMPLATE_COMPONENTS } from "@/components/templates";
 import { useAuthStore } from "@/store/authStore";
 import api from "@/lib/api";
@@ -45,6 +44,8 @@ import AudioPicker, { AudioPlayerBar } from "@/components/templates/AudioPicker"
 import BackgroundPicker from "@/components/templates/BackgroundPicker";
 import { BACKGROUND_SCENES } from "@/lib/data/backgrounds";
 import { SceneBackground } from "@/components/templates/SceneBackground";
+import { useTemplates } from "@/lib/hooks/useTemplates";
+import DynamicTemplateRenderer from "@/components/templates/DynamicTemplateRenderer";
 
 // ─── Pricing add-ons (mirrors backend GetCardPricing) ───────────────────────
 const MUSIC_TRACK_ADDON = 1.0;    // preset music track
@@ -53,6 +54,8 @@ const VOICE_RECORDING_ADDON = 2.0; // user-uploaded voice recording
 // ─── Demo Preview Modal ───────────────────────────────────────────────────────
 function DemoModal({
   templateId,
+  templateName,
+  layout,
   customData,
   audioUrl,
   trackName,
@@ -60,6 +63,8 @@ function DemoModal({
   onClose,
 }: {
   templateId: string;
+  templateName: string;
+  layout?: Record<string, unknown>;
   customData: Record<string, any>;
   audioUrl: string | null;
   trackName?: string;
@@ -108,9 +113,11 @@ function DemoModal({
           {TemplateComponent ? (
             <TemplateComponent {...(customData as any)} />
           ) : (
-            <div className="bg-card p-16 text-center text-muted-foreground">
-              No preview available
-            </div>
+            <DynamicTemplateRenderer
+              templateName={templateName}
+              layout={layout}
+              data={customData}
+            />
           )}
         </div>
 
@@ -305,6 +312,7 @@ type ViewState = "categories" | "products" | "details";
 export default function GenerateLinkPage() {
   const { user, checkAuth } = useAuthStore();
   const { addToCart, cart } = useStore();
+  const { templates } = useTemplates();
 
   // State
   const [currentView, setCurrentView] = useState<ViewState>("categories");
@@ -343,19 +351,13 @@ export default function GenerateLinkPage() {
   // Computed data
   const categoryProducts = useMemo(() => {
     if (!selectedCategory) return [];
-    const normalizedSlug = selectedCategory.slug
-      .replace(/-/g, " ")
-      .replace(/\b\w/g, (c: string) => c.toUpperCase());
-    const matchedCategory =
-      TEMPLATES[selectedCategory.slug as keyof typeof TEMPLATES] ||
-      TEMPLATES[normalizedSlug as keyof typeof TEMPLATES] ||
-      {};
-    return Object.entries(matchedCategory).map(([id, product]) => ({
-      ...product,
-      id,
-      category: selectedCategory.name,
-    })) as (TemplateMetadata & { id: string; category: string })[];
-  }, [selectedCategory]);
+    return templates
+      .filter((template) => template.categorySlug === selectedCategory.slug)
+      .map((template) => ({
+        ...template,
+        category: selectedCategory.name,
+      }));
+  }, [selectedCategory, templates]);
 
   useEffect(() => {
     if (selectedProduct?.defaults) {
@@ -656,16 +658,11 @@ export default function GenerateLinkPage() {
                         return <Component {...(customData as any)} />;
                       })()
                     ) : (
-                      <div className="w-full h-full bg-muted rounded-[3rem] flex items-center justify-center border-8 border-card shadow-xl overflow-hidden relative">
-                        {selectedProduct.image && (
-                          <Image
-                            src={selectedProduct.image}
-                            alt=""
-                            fill
-                            className="object-cover"
-                          />
-                        )}
-                      </div>
+                      <DynamicTemplateRenderer
+                        templateName={selectedProduct.name}
+                        layout={selectedProduct.layout}
+                        data={customData}
+                      />
                     )}
 
                     {/* Audio badge on preview */}
@@ -921,6 +918,8 @@ export default function GenerateLinkPage() {
         {showDemo && (
           <DemoModal
             templateId={selectedProduct?.id}
+            templateName={selectedProduct?.name || "Dynamic Template"}
+            layout={selectedProduct?.layout}
             customData={customData}
             audioUrl={customData.audioUrl || null}
             trackName={customData.audioTrackName}

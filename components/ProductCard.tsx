@@ -7,20 +7,14 @@ import { cn } from "@/lib/utils";
 import { Heart, ShoppingCart, Check } from "lucide-react";
 import { useStore } from "@/store/useStore";
 import { useState } from "react";
-import { TEMPLATES } from "@/lib/data/template";
-
-// Flat mapping for easy lookup
-const TEMPLATES_DATA = Object.values(TEMPLATES).reduce(
-  (acc, cat) => ({ ...acc, ...cat }),
-  {} as Record<string, any>,
-);
 
 export interface Product {
   id: string;
   title: string;
   price: number;
   image?: string;
-  component?: React.ComponentType<any>;
+  component?: React.ComponentType<Record<string, unknown>>;
+  defaults?: Record<string, unknown>;
   category: string;
   isBestseller?: boolean;
   isNew?: boolean;
@@ -99,9 +93,7 @@ export default function ProductCard({
         {product.component ? (
           <div className="absolute inset-0 bg-muted/30 overflow-hidden flex items-center justify-center group-hover:bg-card transition-colors duration-700">
             <div className="w-[480px] pointer-events-none transform scale-[0.4] sm:scale-[0.45] lg:scale-[0.5] origin-center transition-transform duration-700 group-hover:scale-[0.45] sm:group-hover:scale-[0.5] lg:group-hover:scale-[0.55]">
-              <product.component
-                {...(TEMPLATES_DATA[product.id]?.defaults || {})}
-              />
+              <product.component {...(product.defaults || {})} />
             </div>
             {/* Subtle overlay to soften the preview */}
             <div className="absolute inset-0 bg-black/[0.02] pointer-events-none" />

@@ -6,34 +6,29 @@ import { useMemo } from "react";
 import Link from "next/link";
 import { Heart, ArrowRight } from "lucide-react";
 import ProductCard, { Product } from "@/components/ProductCard";
-import { TEMPLATES } from "@/lib/data/template";
+import { useTemplates } from "@/lib/hooks/useTemplates";
 
 export default function FavoritesPage() {
   const { favorites } = useStore();
+  const { templates } = useTemplates();
 
-  // Consolidate all templates from our data source
   const allTemplates = useMemo(() => {
-    const products: Product[] = [];
-    for (const category in TEMPLATES) {
-      const templates = TEMPLATES[category as keyof typeof TEMPLATES];
-      for (const id in templates) {
-        const t = templates[id];
-        products.push({
-          id: t.id,
-          title: t.name,
-          price: t.price,
-          image: t.image,
-          component: t.component,
-          category: category
-            .replace(/-/g, " ")
-            .replace(/\b\w/g, (c) => c.toUpperCase()),
-          isNew: t.isNew,
-          isBestseller: t.isBestseller,
-        });
-      }
-    }
-    return products;
-  }, []);
+    return templates.map(
+      (t): Product => ({
+        id: t.id,
+        title: t.name,
+        price: t.price,
+        image: t.image,
+        component: t.component,
+        defaults: t.defaults,
+        category: t.categorySlug
+          .replace(/-/g, " ")
+          .replace(/\b\w/g, (c) => c.toUpperCase()),
+        isNew: t.isNew,
+        isBestseller: t.isBestseller,
+      }),
+    );
+  }, [templates]);
 
   const favoritedProducts = useMemo(() => {
     return allTemplates.filter((p) => favorites.includes(p.id));
