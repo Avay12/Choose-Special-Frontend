@@ -16,6 +16,7 @@ type AdminTemplate = {
   thumbnail_url?: string;
   layout_json: string;
   features_json: string;
+  price: number;
   is_active: boolean;
   version: number;
   created_at: string;
@@ -30,6 +31,7 @@ type TemplateFormState = {
   thumbnail_url: string;
   layout_json: string;
   features_json: string;
+  price: number;
   is_active: boolean;
 };
 
@@ -39,6 +41,7 @@ const INITIAL_FORM: TemplateFormState = {
   category: "",
   description: "",
   thumbnail_url: "",
+  price: 0,
   layout_json: JSON.stringify(
     {
       price: 10,
@@ -70,6 +73,7 @@ function isValidJSON(value: string) {
 
 export default function AdminTemplatesPage() {
   const [templates, setTemplates] = useState<AdminTemplate[]>([]);
+  const [categoryPrices, setCategoryPrices] = useState<Record<string, number>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
@@ -81,9 +85,18 @@ export default function AdminTemplatesPage() {
   const fetchTemplates = async () => {
     setIsLoading(true);
     try {
-      const response = await api.get<{ templates: AdminTemplate[] }>("/admin/templates");
-      const data = response.data.templates || [];
-      setTemplates(data);
+      const [templatesRes, pricesRes] = await Promise.all([
+        api.get<{ templates: AdminTemplate[] }>("/admin/templates"),
+        api.get<{ category_prices: any[] }>("/admin/category-prices")
+      ]);
+      
+      setTemplates(templatesRes.data.templates || []);
+      
+      const priceMap: Record<string, number> = {};
+      (pricesRes.data.category_prices || []).forEach(p => {
+        priceMap[p.category.toLowerCase()] = p.price;
+      });
+      setCategoryPrices(priceMap);
     } catch (err: unknown) {
       const message =
         err && typeof err === "object" && "response" in err
@@ -122,6 +135,7 @@ export default function AdminTemplatesPage() {
       thumbnail_url: template.thumbnail_url || "",
       layout_json: template.layout_json || "{}",
       features_json: template.features_json || "[]",
+      price: template.price || 0,
       is_active: template.is_active,
     });
     setIsFormModalOpen(true);
@@ -153,6 +167,7 @@ export default function AdminTemplatesPage() {
         thumbnail_url: form.thumbnail_url.trim(),
         layout_json: JSON.parse(form.layout_json),
         features_json: JSON.parse(form.features_json),
+        price: Number(form.price),
         is_active: form.is_active,
       };
 
@@ -271,6 +286,7 @@ export default function AdminTemplatesPage() {
                   <th className="px-4 py-3">Name</th>
                   <th className="px-4 py-3">Slug</th>
                   <th className="px-4 py-3">Category</th>
+                  <th className="px-4 py-3">Price</th>
                   <th className="px-4 py-3">Status</th>
                   <th className="px-4 py-3">Version</th>
                   <th className="px-4 py-3">Updated</th>
@@ -285,6 +301,24 @@ export default function AdminTemplatesPage() {
                       {template.slug}
                     </td>
                     <td className="px-4 py-3 capitalize">{template.category}</td>
+                    <td className="px-4 py-3">
+                      {template.price > 0 ? (
+                        <span className="font-bold text-primary">
+                          ${template.price.toFixed(2)}
+                        </span>
+                      ) : categoryPrices[template.category.toLowerCase()] ? (
+                        <div className="flex flex-col">
+                          <span className="font-bold text-foreground">
+                            ${categoryPrices[template.category.toLowerCase()].toFixed(2)}
+                          </span>
+                          <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-tighter">
+                            Category Default
+                          </span>
+                        </div>
+                      ) : (
+                        <span className="text-muted-foreground italic">No price set</span>
+                      )}
+                    </td>
                     <td className="px-4 py-3">
                       {template.is_active ? (
                         <span className="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">
@@ -435,6 +469,26 @@ export default function AdminTemplatesPage() {
                   }
                   className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm"
                   placeholder="https://..."
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="template-price"
+                  className="block text-sm font-medium text-foreground mb-1.5"
+                >
+                  Price ($)
+                </label>
+                <input
+                  id="template-price"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={form.price}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, price: parseFloat(e.target.value) || 0 }))
+                  }
+                  className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm"
+                  placeholder="9.99"
                 />
               </div>
             </div>

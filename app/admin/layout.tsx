@@ -9,7 +9,7 @@ import {
   LayoutDashboard,
   Settings,
   PlusSquare,
-  LinkIcon,
+  DollarSign,
   LogOut,
   Menu,
   X,
@@ -55,7 +55,7 @@ export default function AdminLayout({
     { name: "Orders", href: "/admin/orders", icon: ShoppingBag },
     { name: "Cards", href: "/admin/cards", icon: PlusSquare },
     { name: "Templates", href: "/admin/templates", icon: Shapes },
-    { name: "Create Link", href: "/admin/links/create", icon: LinkIcon },
+    { name: "Pricing Setup", href: "/admin/category-prices", icon: DollarSign },
     { name: "Manage Site", href: "/admin/manage", icon: Settings },
   ];
 
