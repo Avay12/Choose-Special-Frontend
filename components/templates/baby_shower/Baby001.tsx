@@ -124,7 +124,7 @@ export default function Baby001({
           </div>
         </div>
         <p className="text-[10px] font-bold tracking-[0.4em] text-slate-400 uppercase mt-4">
-          A JOY GREETLY COLLECTION
+          A CHOOSE SPECIAL COLLECTION
         </p>
       </div>
     </motion.div>

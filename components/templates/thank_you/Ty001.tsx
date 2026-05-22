@@ -68,7 +68,7 @@ export default function Ty001({
           />
         </div>
         <p className="text-[10px] font-bold tracking-[0.4em] text-teal-400 uppercase">
-          A JOY GREETLY SPECIAL
+          A CHOOSE SPECIAL COLLECTION
         </p>
       </div>
 

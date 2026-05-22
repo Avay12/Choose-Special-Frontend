@@ -83,17 +83,17 @@ function LoginForm() {
           </Link>
           <div className="flex justify-center mb-6">
             <Image
-              src={`${theme === "dark" ? "/logo-dark-horizontal.png" : "/logo-horizontal.png"}`}
-              alt="Joy Greetly"
+              src={`/logo-cs.png`}
+              alt="Choose Special"
               width={100}
-              height={50}
-              className="w-24 object-contain"
+              height={100}
+              className="w-12 object-contain"
             />
           </div>
 
           <h1 className="font-heading text-4xl font-bold mb-2">Welcome Back</h1>
           <p className="text-muted-foreground mb-8">
-            Sign in to your JoyGreeting account
+            Sign in to your Choose Special account
           </p>
 
           <form className="space-y-6" onSubmit={handleSubmit}>

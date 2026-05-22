@@ -49,15 +49,15 @@ export default function Footer() {
               className="flex items-center gap-2 mb-4 group inline-flex"
             >
               <Image
-                src={`${theme === "dark" ? "/logo-dark-horizontal.png" : "/logo-horizontal.png"}`}
-                alt="Joy Greetly"
+                src={`/logo-cs.png`}
+                alt="Choose Special"
                 width={100}
-                height={50}
-                className="w-24 object-contain"
+                height={100}
+                className="w-12 object-contain"
               />
-              {/* <span className="font-heading font-bold text-xl tracking-tight text-foreground">
-                Joy<span className="text-primary">Greetly</span>
-              </span> */}
+              <span className="font-heading font-bold text-xl tracking-tight text-foreground">
+                Choose<span className="text-primary">Special</span>
+              </span>
             </Link>
             <p className="text-sm max-w-xs mb-6">
               Share smiles and celebrate special moments with our premium,
@@ -110,7 +110,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-center md:text-left">
-            &copy; {new Date().getFullYear()} JoyGreetly. All rights reserved.
+            &copy; {new Date().getFullYear()} Choose Special. All rights reserved.
           </p>
           <div className="flex gap-4 text-xs">
             <Link

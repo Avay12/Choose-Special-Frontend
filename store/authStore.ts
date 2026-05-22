@@ -42,7 +42,7 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: "joy-greetly-auth", // localStorage key
+      name: "choose-special-auth", // localStorage key
       partialize: (state) => ({ user: state.user }), // only persist `user`
     },
   ),

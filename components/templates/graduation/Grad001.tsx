@@ -90,7 +90,7 @@ export default function Grad001({
           </div>
         </div>
         <p className="text-[10px] font-bold tracking-[0.4em] text-slate-300 uppercase mt-4">
-          JOY GREETLY GRADUATE EDITION
+          CHOOSE SPECIAL GRADUATE EDITION
         </p>
       </div>
     </motion.div>

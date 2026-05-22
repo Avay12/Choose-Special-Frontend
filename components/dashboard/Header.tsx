@@ -103,7 +103,7 @@ export function Header() {
                       {user?.name || "User"}
                     </p>
                     <p className="text-xs text-muted-foreground truncate mt-0.5">
-                      {user?.email || "user@joygreetly.com"}
+                      {user?.email || "user@choosespecial.com"}
                     </p>
                     <span className="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest">
                       {user?.role === "admin" ? "Admin" : "Member"}

@@ -101,7 +101,7 @@ export const useStore = create<StoreState>()(
       setSearchOpen: (isOpen) => set({ isSearchOpen: isOpen }),
     }),
     {
-      name: "joy-greetly-storage",
+      name: "choose-special-storage",
     },
   ),
 );

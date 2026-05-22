@@ -57,7 +57,7 @@ export default function Annv002({
         </div>
         <div className="text-right">
           <p className="text-[10px] font-bold tracking-[0.2em] text-slate-400 uppercase">
-            Joy Greetly <br /> Special Edition
+            Choose Special <br /> Anniversary Edition
           </p>
         </div>
       </div>

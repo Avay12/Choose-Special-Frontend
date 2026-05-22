@@ -22,13 +22,13 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Joy Greetly - Premium Greeting Cards",
+  title: "Choose Special - Share Smiles and Celebrate Special Moments",
   description:
-    "Share smiles and celebrate special moments with our premium, handcrafted greeting cards.",
+    "Share smiles and celebrate special moments with our premium, handcrafted Choose Special Moments.",
   icons: {
-    icon: "/logo.png",
-    shortcut: "/logo.png",
-    apple: "/logo.png",
+    icon: "/logo-cs.png",
+    shortcut: "/logo-cs.png",
+    apple: "/logo-cs.png",
   },
 };
 

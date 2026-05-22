@@ -75,7 +75,7 @@ export default function Symp001({
           <div className="h-[1px] w-8 bg-slate-300" />
         </div>
         <p className="text-[10px] font-bold tracking-[0.5em] text-slate-300 uppercase">
-          A JOY GREETLY SUPPORT CARD
+          A CHOOSE SPECIAL SUPPORT CARD
         </p>
       </div>
 

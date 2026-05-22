@@ -21,7 +21,7 @@ export default function ReferralPage() {
   const referralCode = user?.id
     ? `REF-${user.name?.split(" ")[0].toUpperCase()}-${user.id}`
     : "REF-USER";
-  const referralLink = `https://joygreetly.com/join?ref=${referralCode}`;
+  const referralLink = `https://choosespecial.com/join?ref=${referralCode}`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(referralLink);

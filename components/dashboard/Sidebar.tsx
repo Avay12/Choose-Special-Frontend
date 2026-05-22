@@ -40,14 +40,14 @@ export function Sidebar() {
         <div className="p-6 pb-2">
           <Link href="/dashboard" className="flex items-center gap-2">
             <Image
-              src={`${theme === "dark" ? "/logo-dark.png" : "/logo.png"}`}
-              alt="JoyGreetly Logo"
+              src={`/logo-cs.png`}
+              alt="Choose Special"
               width={32}
               height={32}
               className="h-8 w-8 object-contain"
             />
             <span className="text-xl font-bold tracking-tight text-foreground">
-              Joy<span className="text-primary">Greetly</span>
+              Choose<span className="text-primary">Special</span>
             </span>
           </Link>
         </div>
