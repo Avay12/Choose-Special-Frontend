@@ -20,7 +20,7 @@ export default function AboutUsPage() {
       <div>
         <h1 className="text-2xl font-bold text-foreground">About Us</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Learn more about JoyGreetly and our mission
+          Learn more about Choose Special and our mission
         </p>
       </div>
 
@@ -145,7 +145,7 @@ export default function AboutUsPage() {
                 Email
               </p>
               <p className="text-[15px] font-semibold text-foreground">
-                support@joygreetly.com
+                support@choosespecial.com
               </p>
             </div>
           </div>

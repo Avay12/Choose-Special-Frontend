@@ -79,14 +79,14 @@ export default function AdminLayout({
         <div className="h-16 flex items-center justify-between px-6 border-b border-border">
           <Link href="/admin" className="flex items-center gap-2">
             <Image
-              src={`${theme === "dark" ? "/logo-dark.png" : "/logo.png"}`}
-              alt="Logo"
+              src={`/logo-cs.png`}
+              alt="Choose Special"
               width={50}
               height={50}
               className="w-12 h-12 object-contain"
             />
             <span className="text-xl font-bold font-heading tracking-wide text-foreground">
-              Greeting<span className="ml-1 text-primary">Admin</span>
+              Choose<span className="ml-1 text-primary">Special Admin</span>
             </span>
           </Link>
           <button
@@ -161,14 +161,14 @@ export default function AdminLayout({
             </button>
             <Link href="/admin" className="flex items-center gap-2">
               <Image
-                src={`${theme === "dark" ? "/logo-dark.png" : "/logo.png"}`}
-                alt="Logo"
+                src={`/logo-cs.png`}
+                alt="Choose Special"
                 width={24}
                 height={24}
                 className="w-6 h-6 object-contain"
               />
               <span className="text-lg font-bold font-heading tracking-wide text-foreground">
-                Greeting<span className="text-primary">Admin</span>
+                Choose<span className="text-primary">Special Admin</span>
               </span>
             </Link>
           </div>

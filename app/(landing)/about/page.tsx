@@ -50,7 +50,7 @@ export default function AboutPage() {
             Sharing joy, one <br /> card at a time.
           </h1>
           <p className="text-xl text-muted-foreground leading-relaxed mb-8">
-            JoyGreetly started with a simple belief: that a physical card
+            Choose Special started with a simple belief: that a physical card
             carries a weight of emotion that digital messages simply cannot
             match. What began as a small studio in 2018 has grown into a
             destination for beautifully crafted stationery.

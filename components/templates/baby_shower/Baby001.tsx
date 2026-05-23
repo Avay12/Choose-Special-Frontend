@@ -29,7 +29,9 @@ export default function Baby001({
     coverBg: "bg-gradient-to-br from-[#fdf2f8] via-purple-100 to-[#eff6ff]",
     borderColor: "border-pink-200/30",
     sealBg: "bg-white text-blue-400 shadow-sm",
-    sealIcon: <Baby className="w-8 h-8 text-blue-400 fill-blue-50" strokeWidth={1.5} />,
+    sealIcon: (
+      <Baby className="w-8 h-8 text-blue-400 fill-blue-50" strokeWidth={1.5} />
+    ),
     title: "A Baby Shower",
     subtitle: `Honoring ${parents}`,
     textColor: "text-slate-800",
@@ -37,7 +39,10 @@ export default function Baby001({
   };
 
   return (
-    <CardEnvelope theme={envelopeTheme} className="max-w-[400px] mx-auto min-h-[580px]">
+    <CardEnvelope
+      theme={envelopeTheme}
+      className="max-w-[400px] mx-auto min-h-[580px]"
+    >
       <div className="w-full h-full bg-gradient-to-br from-[#fdf2f8] via-[#f0fdf4] to-[#eff6ff] rounded-[3rem] border-8 border-white overflow-hidden relative group p-12 text-center flex flex-col items-center justify-center gap-10">
         {/* Soft Floating Circles Background Animation */}
         <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">

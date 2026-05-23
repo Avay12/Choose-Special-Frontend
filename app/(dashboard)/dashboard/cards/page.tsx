@@ -239,7 +239,7 @@ export default function CardLinksPage() {
                               className="flex items-center mt-1 text-xs font-semibold text-primary hover:text-primary/80 cursor-pointer"
                             >
                               <LinkIcon className="mr-1 h-3 w-3" />
-                              joygreetly.com/preview/{card.id}
+                              choosespecial.com/preview/{card.id}
                             </Link>
                           </div>
                         </div>

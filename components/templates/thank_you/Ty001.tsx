@@ -16,7 +16,12 @@ export default function Ty001({
     coverBg: "bg-gradient-to-br from-[#2d5a57] via-teal-700 to-teal-800",
     borderColor: "border-teal-600/40",
     sealBg: "bg-white text-teal-700",
-    sealIcon: <Heart className="w-8 h-8 fill-teal-100 text-teal-600" strokeWidth={1.5} />,
+    sealIcon: (
+      <Heart
+        className="w-8 h-8 fill-teal-100 text-teal-600"
+        strokeWidth={1.5}
+      />
+    ),
     title: "A Note of Thanks",
     subtitle: name,
     textColor: "text-white",
@@ -24,7 +29,10 @@ export default function Ty001({
   };
 
   return (
-    <CardEnvelope theme={envelopeTheme} className="max-w-[400px] mx-auto aspect-[4/5]">
+    <CardEnvelope
+      theme={envelopeTheme}
+      className="max-w-[400px] mx-auto aspect-[4/5]"
+    >
       <div className="w-full h-full bg-[#f8f9fa] rounded-[2.5rem] border border-teal-100 overflow-hidden relative group p-12 text-center flex flex-col items-center justify-between">
         {/* Decorative center pattern background */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] aspect-square rounded-full border border-teal-200/50 opacity-10 pointer-events-none" />

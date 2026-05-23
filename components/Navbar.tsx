@@ -61,12 +61,15 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
           <Image
-            src={`${theme === "dark" ? "/logo-dark-horizontal.png" : "/logo-horizontal.png"}`}
-            alt="Joy Greetly"
+            src={`/logo-cs.png`}
+            alt="Choose Special"
             width={100}
-            height={50}
-            className="w-24 object-contain"
+            height={100}
+            className="w-9 object-contain"
           />
+          <span className="font-heading font-bold text-xl tracking-tight text-foreground">
+            Choose<span className="text-primary">Special</span>
+          </span>
         </Link>
 
         {/* Desktop Nav */}

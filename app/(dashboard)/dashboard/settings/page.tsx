@@ -58,7 +58,9 @@ export default function SettingsPage() {
   // Dynamic details
   const displayEmail = user?.email || "user@example.com";
   const displayName = user?.name || "User";
-  const accountId = user?.id ? `JOY-${user.id.toString().padStart(6, "0")}` : "N/A";
+  const accountId = user?.id
+    ? `JOY-${user.id.toString().padStart(6, "0")}`
+    : "N/A";
   const memberSince = user?.created_at
     ? new Date(user.created_at).toLocaleDateString("en-US", {
         month: "long",

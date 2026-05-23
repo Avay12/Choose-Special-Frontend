@@ -79,18 +79,18 @@ function RegisterForm() {
           </Link>
           <div className="flex justify-center mb-6">
             <Image
-              src={`${theme === "dark" ? "/logo-dark-horizontal.png" : "/logo-horizontal.png"}`}
-              alt="Joy Greetly"
+              src={`/logo-cs.png`}
+              alt="Choose Special"
               width={100}
-              height={50}
-              className="w-24 object-contain"
+              height={100}
+              className="w-12 object-contain"
             />
           </div>
 
           {showOTP ? (
-            <OTPVerification 
-              email={email} 
-              onSuccess={handleVerificationSuccess} 
+            <OTPVerification
+              email={email}
+              onSuccess={handleVerificationSuccess}
               onBack={() => setShowOTP(false)}
             />
           ) : (
@@ -99,7 +99,7 @@ function RegisterForm() {
                 Create Account
               </h1>
               <p className="text-muted-foreground mb-8">
-                Join the JoyGreetly community today
+                Join the Choose Special community today
               </p>
 
               <form className="space-y-6" onSubmit={handleSubmit}>
@@ -170,7 +170,9 @@ function RegisterForm() {
                       <Loader2 className="w-5 h-5 animate-spin" />
                       Sending Verification Code...
                     </div>
-                  ) : "Create Account"}
+                  ) : (
+                    "Create Account"
+                  )}
                 </button>
               </form>
 

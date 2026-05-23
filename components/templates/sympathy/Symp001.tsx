@@ -24,7 +24,10 @@ export default function Symp001({
   };
 
   return (
-    <CardEnvelope theme={envelopeTheme} className="max-w-[400px] mx-auto min-h-[580px]">
+    <CardEnvelope
+      theme={envelopeTheme}
+      className="max-w-[400px] mx-auto min-h-[580px]"
+    >
       <div className="w-full h-full bg-[#fdfdfd] border border-slate-200 rounded-[2.5rem] overflow-hidden relative group p-12 text-center flex flex-col items-center justify-center gap-10">
         {/* Subtle Calming Background Animation */}
         <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">

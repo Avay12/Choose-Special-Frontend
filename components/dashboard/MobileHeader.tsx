@@ -26,14 +26,14 @@ export function MobileHeader() {
       {/* Logo Left */}
       <Link href="/dashboard" className="flex items-center gap-2">
         <Image
-          src={`${theme === "dark" ? "/logo-dark.png" : "/logo.png"}`}
-          alt="JoyGreetly Logo"
-          width={28}
-          height={28}
-          className="h-7 w-7 object-contain"
+          src={`/logo-cs.png`}
+          alt="Choose Special"
+          width={100}
+          height={100}
+          className="h-12 w-12 object-contain"
         />
         <span className="text-lg font-bold tracking-tight text-foreground">
-          Joy<span className="text-primary">Greetly</span>
+          Choose<span className="text-primary">Special</span>
         </span>
       </Link>
 
@@ -76,7 +76,7 @@ export function MobileHeader() {
                     {user?.name || "User"}
                   </p>
                   <p className="text-xs text-muted-foreground truncate">
-                    {user?.email || "user@joygreetly.com"}
+                    {user?.email || "user@choosespecial.com"}
                   </p>
                 </div>
 

@@ -26,7 +26,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setMounted(true);
-    const stored = localStorage.getItem("joygreetly-theme") as Theme | null;
+    const stored = localStorage.getItem("choose-special-theme") as Theme | null;
     const prefersDark = window.matchMedia(
       "(prefers-color-scheme: dark)",
     ).matches;
@@ -46,7 +46,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const setTheme = (t: Theme) => {
     setThemeState(t);
-    localStorage.setItem("joygreetly-theme", t);
+    localStorage.setItem("choose-special-theme", t);
     applyTheme(t);
   };
 
@@ -62,7 +62,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
           __html: `
             (function() {
               try {
-                var stored = localStorage.getItem('joygreetly-theme');
+                var stored = localStorage.getItem('choose-special-theme');
                 var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                 var theme = stored || (prefersDark ? 'dark' : 'light');
                 if (theme === 'dark') document.documentElement.classList.add('dark');

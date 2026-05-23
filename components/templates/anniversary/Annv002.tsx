@@ -18,7 +18,9 @@ export default function Annv002({
     coverBg: "bg-gradient-to-br from-slate-950 via-slate-900 to-zinc-800",
     borderColor: "border-slate-800",
     sealBg: "bg-gradient-to-br from-amber-400 to-amber-600 text-white",
-    sealIcon: <Heart className="w-8 h-8 fill-white text-white" strokeWidth={1.5} />,
+    sealIcon: (
+      <Heart className="w-8 h-8 fill-white text-white" strokeWidth={1.5} />
+    ),
     title: "Happy Anniversary",
     subtitle: names,
     textColor: "text-slate-100",
@@ -26,7 +28,10 @@ export default function Annv002({
   };
 
   return (
-    <CardEnvelope theme={envelopeTheme} className="max-w-[400px] mx-auto aspect-[4/5]">
+    <CardEnvelope
+      theme={envelopeTheme}
+      className="max-w-[400px] mx-auto aspect-[4/5]"
+    >
       <div className="w-full h-full bg-white text-slate-900 border border-slate-100 overflow-hidden p-12 flex flex-col justify-between relative">
         {/* Central Modern Typography Section */}
         <div className="flex-1 flex flex-col items-start gap-8 pt-8">

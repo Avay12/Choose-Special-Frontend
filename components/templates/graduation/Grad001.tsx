@@ -21,7 +21,9 @@ export default function Grad001({
     coverBg: "bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-slate-900",
     borderColor: "border-[#0f172a]",
     sealBg: "bg-gradient-to-br from-amber-400 to-amber-600 text-white",
-    sealIcon: <GraduationCap className="w-8 h-8 text-white" strokeWidth={1.5} />,
+    sealIcon: (
+      <GraduationCap className="w-8 h-8 text-white" strokeWidth={1.5} />
+    ),
     title: "Commencement 2024",
     subtitle: name,
     textColor: "text-white",
@@ -29,7 +31,10 @@ export default function Grad001({
   };
 
   return (
-    <CardEnvelope theme={envelopeTheme} className="max-w-[400px] mx-auto min-h-[580px]">
+    <CardEnvelope
+      theme={envelopeTheme}
+      className="max-w-[400px] mx-auto min-h-[580px]"
+    >
       <div className="w-full h-full bg-white border-[12px] border-[#0f172a] rounded-[2rem] overflow-hidden relative group p-12 text-center flex flex-col items-center justify-between">
         {/* Dynamic Stripe Background Shapes */}
         <div className="absolute top-0 right-0 w-[40%] h-full bg-[#f8fafc] -z-10 skew-x-12 translate-x-[20%]" />
