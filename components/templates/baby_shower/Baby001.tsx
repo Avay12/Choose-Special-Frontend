@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Baby, Stars, Cloud } from "lucide-react";
-import CardEnvelope from "../CardEnvelope";
+import PresentationWrapper from "../PresentationWrapper";
 
 interface Baby001Props {
   name?: string;
@@ -10,6 +10,7 @@ interface Baby001Props {
   date?: string;
   time?: string;
   location?: string;
+  animationType?: string;
 }
 
 export default function Baby001({
@@ -17,8 +18,7 @@ export default function Baby001({
   parents = "Mary & Mark",
   date = "October 20, 2024",
   time = "2:00 PM",
-  location = "The Tea Garden, Elmwood",
-}: Baby001Props) {
+  location = "The Tea Garden, Elmwood", animationType }: Baby001Props) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function Baby001({
   };
 
   return (
-    <CardEnvelope
+    <PresentationWrapper animationType={animationType}
       theme={envelopeTheme}
       className="max-w-[400px] mx-auto min-h-[580px]"
     >
@@ -132,6 +132,6 @@ export default function Baby001({
           </p>
         </div>
       </div>
-    </CardEnvelope>
+    </PresentationWrapper>
   );
 }

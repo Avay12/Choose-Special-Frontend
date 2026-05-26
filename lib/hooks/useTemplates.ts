@@ -16,6 +16,7 @@ type ApiTemplate = {
   features_json?: string;
   is_active: boolean;
   version: number;
+  price?: number;
 };
 
 type DynamicTemplate = TemplateMetadata & {
@@ -39,38 +40,38 @@ function parseJSON(value: string | undefined, fallback: unknown): unknown {
   }
 }
 
-function toDynamicTemplate(template: ApiTemplate): DynamicTemplate {
+function toDynamicTemplate(template: ApiTemplate, fallback?: DynamicTemplate): DynamicTemplate {
   const layout = toRecord(parseJSON(template.layout_json, {}));
   const meta = toRecord(layout.meta);
-  const defaults = toRecord(layout.defaults);
-  const fields = Array.isArray(layout.fields)
+  
+  // Use DB layout fields if they exist, otherwise use fallback
+  const defaults = Object.keys(layout.defaults || {}).length > 0 
+    ? toRecord(layout.defaults) 
+    : (fallback?.defaults || {});
+    
+  const fields = Array.isArray(layout.fields) && layout.fields.length > 0
     ? layout.fields.filter((field): field is string => typeof field === "string")
-    : [];
+    : (fallback?.fields || []);
 
-  const rawPrice = meta.price ?? layout.price;
-  const price =
-    typeof rawPrice === "number"
-      ? rawPrice
-      : typeof rawPrice === "string"
-        ? Number(rawPrice) || 0
-        : 0;
+  const price = template.price ?? fallback?.price ?? 0;
 
   return {
     id: template.slug,
     backendId: template.id,
     categorySlug: template.category,
-    name: template.name,
-    description: template.description || "Customizable greeting card template.",
+    name: fallback?.name || template.name,
+    description: template.description || fallback?.description || "Customizable greeting card template.",
     image:
       template.thumbnail_url ||
-      (typeof meta.image === "string" ? meta.image : undefined),
-    component: TEMPLATE_COMPONENTS[template.slug],
-    layout,
+      (typeof meta.image === "string" ? meta.image : undefined) ||
+      fallback?.image,
+    component: TEMPLATE_COMPONENTS[template.slug] || fallback?.component,
+    layout: Object.keys(layout).length > 0 ? layout : (fallback?.layout || {}),
     price,
     fields,
     defaults: defaults as Record<string, string | number>,
-    isNew: Boolean(meta.isNew),
-    isBestseller: Boolean(meta.isBestseller),
+    isNew: Boolean(meta.isNew) || fallback?.isNew,
+    isBestseller: Boolean(meta.isBestseller) || fallback?.isBestseller,
   };
 }
 
@@ -104,9 +105,22 @@ export function useTemplates() {
           params: { limit: 200 },
         });
         if (!mounted) return;
-        const mapped = (response.data.templates || []).map(toDynamicTemplate);
-        if (mapped.length > 0) {
-          setTemplates(mapped);
+        
+        const fallbacks = getFallbackTemplates();
+        const fallbackMap = new Map(fallbacks.map(f => [f.id, f]));
+        
+        const mapped = (response.data.templates || []).map(t => 
+          toDynamicTemplate(t, fallbackMap.get(t.slug))
+        );
+        
+        // Include any fallbacks that aren't in the database yet
+        const backendSlugs = new Set(mapped.map(t => t.id));
+        const unmappedFallbacks = fallbacks.filter(f => !backendSlugs.has(f.id));
+        
+        const allTemplates = [...mapped, ...unmappedFallbacks];
+        
+        if (allTemplates.length > 0) {
+          setTemplates(allTemplates);
         }
       } catch (error) {
         console.error("Failed to fetch templates from server:", error);
@@ -136,3 +150,4 @@ export function useTemplates() {
 
   return { templates, groupedByCategory, loading };
 }
+

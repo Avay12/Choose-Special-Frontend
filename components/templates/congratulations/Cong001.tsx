@@ -1,19 +1,19 @@
 "use client";
 
 import { PartyPopper, Star, Stars } from "lucide-react";
-import CardEnvelope from "../CardEnvelope";
+import PresentationWrapper from "../PresentationWrapper";
 
 interface Cong001Props {
   name?: string;
   achievement?: string;
   message?: string;
+  animationType?: string;
 }
 
 export default function Cong001({
   name = "Winner",
   achievement = "Your Graduation",
-  message = "So incredibly proud of everything you've achieved. The future is yours!",
-}: Cong001Props) {
+  message = "So incredibly proud of everything you've achieved. The future is yours!", animationType }: Cong001Props) {
   const envelopeTheme = {
     coverBg: "bg-gradient-to-br from-amber-450 via-yellow-500 to-amber-600",
     borderColor: "border-yellow-300/40",
@@ -26,7 +26,7 @@ export default function Cong001({
   };
 
   return (
-    <CardEnvelope theme={envelopeTheme} className="max-w-[400px] mx-auto aspect-[4/5]">
+    <PresentationWrapper animationType={animationType} theme={envelopeTheme} className="max-w-[400px] mx-auto aspect-[4/5]">
       <div className="w-full h-full bg-[#fff] rounded-[2.5rem] border border-slate-100 overflow-hidden relative group p-12 text-center flex flex-col items-center justify-between">
         {/* Dynamic Golden Background Shapes */}
         <div className="absolute top-0 right-0 w-[60%] h-[40%] bg-gradient-to-bl from-amber-50 to-transparent rounded-bl-[8rem] -z-10 translate-x-[10%] -translate-y-[10%]" />
@@ -85,6 +85,6 @@ export default function Cong001({
           </p>
         </div>
       </div>
-    </CardEnvelope>
+    </PresentationWrapper>
   );
 }

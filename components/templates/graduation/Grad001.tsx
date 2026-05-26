@@ -2,21 +2,21 @@
 
 import { motion } from "framer-motion";
 import { GraduationCap, Trophy, ArrowUpRight } from "lucide-react";
-import CardEnvelope from "../CardEnvelope";
+import PresentationWrapper from "../PresentationWrapper";
 
 interface Grad001Props {
   name?: string;
   degree?: string;
   classYear?: string;
   message?: string;
+  animationType?: string;
 }
 
 export default function Grad001({
   name = "James Wilson",
   degree = "Bachelor of Architecture",
   classYear = "Class of 2024",
-  message = "Dream big, work hard, and never stop growing. The best is yet to come!",
-}: Grad001Props) {
+  message = "Dream big, work hard, and never stop growing. The best is yet to come!", animationType }: Grad001Props) {
   const envelopeTheme = {
     coverBg: "bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-slate-900",
     borderColor: "border-[#0f172a]",
@@ -31,7 +31,7 @@ export default function Grad001({
   };
 
   return (
-    <CardEnvelope
+    <PresentationWrapper animationType={animationType}
       theme={envelopeTheme}
       className="max-w-[400px] mx-auto min-h-[580px]"
     >
@@ -108,6 +108,6 @@ export default function Grad001({
           </p>
         </div>
       </div>
-    </CardEnvelope>
+    </PresentationWrapper>
   );
 }

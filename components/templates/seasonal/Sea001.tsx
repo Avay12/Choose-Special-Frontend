@@ -2,17 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { Snowflake, Cloud, Sparkles } from "lucide-react";
-import CardEnvelope from "../CardEnvelope";
+import PresentationWrapper from "../PresentationWrapper";
 
 interface Sea001Props {
   season?: string;
   message?: string;
+  animationType?: string;
 }
 
 export default function Sea001({
   season = "Winter",
-  message = "Wishing you warmth, peace, and many joyful moments this season.",
-}: Sea001Props) {
+  message = "Wishing you warmth, peace, and many joyful moments this season.", animationType }: Sea001Props) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function Sea001({
   };
 
   return (
-    <CardEnvelope theme={envelopeTheme} className="max-w-[400px] mx-auto min-h-[580px]">
+    <PresentationWrapper animationType={animationType} theme={envelopeTheme} className="max-w-[400px] mx-auto min-h-[580px]">
       <div className="w-full h-full bg-gradient-to-b from-[#0f172a] to-[#1e293b] rounded-[3rem] border-4 border-slate-700/50 overflow-hidden relative group p-12 text-center flex flex-col items-center justify-center gap-12">
         {/* Snowfall background animation */}
         <div className="absolute inset-0 z-0 pointer-events-none">
@@ -98,6 +98,6 @@ export default function Sea001({
           </p>
         </div>
       </div>
-    </CardEnvelope>
+    </PresentationWrapper>
   );
 }

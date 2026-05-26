@@ -1,19 +1,19 @@
 "use client";
 
 import { Heart } from "lucide-react";
-import CardEnvelope from "../CardEnvelope";
+import PresentationWrapper from "../PresentationWrapper";
 
 interface Annv002Props {
   names?: string;
   year?: string;
   years?: number;
+  animationType?: string;
 }
 
 export default function Annv002({
   names = "Emily & David",
   year = "2024",
-  years = 10,
-}: Annv002Props) {
+  years = 10, animationType }: Annv002Props) {
   const envelopeTheme = {
     coverBg: "bg-gradient-to-br from-slate-950 via-slate-900 to-zinc-800",
     borderColor: "border-slate-800",
@@ -28,7 +28,7 @@ export default function Annv002({
   };
 
   return (
-    <CardEnvelope
+    <PresentationWrapper animationType={animationType}
       theme={envelopeTheme}
       className="max-w-[400px] mx-auto aspect-[4/5]"
     >
@@ -79,6 +79,6 @@ export default function Annv002({
         {/* Small Accents */}
         <div className="absolute top-0 right-0 w-[40%] h-full bg-slate-50/50 -z-10 translate-x-[20%] skew-x-12" />
       </div>
-    </CardEnvelope>
+    </PresentationWrapper>
   );
 }

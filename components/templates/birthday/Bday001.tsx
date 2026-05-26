@@ -2,19 +2,19 @@
 
 import { useState, useEffect } from "react";
 import { Cake, Sparkle, Stars } from "lucide-react";
-import CardEnvelope from "../CardEnvelope";
+import PresentationWrapper from "../PresentationWrapper";
 
 interface Bday001Props {
   name?: string;
   age?: number;
   message?: string;
+  animationType?: string;
 }
 
 export default function Bday001({
   name = "Alex",
   age = 25,
-  message = "Hope your day is as amazing as you are! Wishing you the best year yet.",
-}: Bday001Props) {
+  message = "Hope your day is as amazing as you are! Wishing you the best year yet.", animationType }: Bday001Props) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function Bday001({
   };
 
   return (
-    <CardEnvelope theme={envelopeTheme} className="max-w-[400px] mx-auto aspect-[4/5]">
+    <PresentationWrapper animationType={animationType} theme={envelopeTheme} className="max-w-[400px] mx-auto aspect-[4/5]">
       <div className="w-full h-full bg-gradient-to-tr from-[#f6f2ee] via-[#f1f7f9] to-[#edf4f1] rounded-[2rem] border-4 border-white overflow-hidden relative group p-12 text-center flex flex-col items-center justify-between">
         {/* Confetti Background animation */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -110,6 +110,6 @@ export default function Bday001({
         {/* Stylized geometric background shape */}
         <div className="absolute top-1/2 left-0 w-full h-1/2 bg-blue-50/50 -z-0 -translate-y-1/2 -skew-y-6" />
       </div>
-    </CardEnvelope>
+    </PresentationWrapper>
   );
 }

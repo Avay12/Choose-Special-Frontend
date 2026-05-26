@@ -1,17 +1,17 @@
 "use client";
 
 import { Smile, Sparkles, Heart } from "lucide-react";
-import CardEnvelope from "../CardEnvelope";
+import PresentationWrapper from "../PresentationWrapper";
 
 interface Ty001Props {
   name?: string;
   message?: string;
+  animationType?: string;
 }
 
 export default function Ty001({
   name = "Friend",
-  message = "Just wanted to say a heartfelt thank you for your support. It means the world to me.",
-}: Ty001Props) {
+  message = "Just wanted to say a heartfelt thank you for your support. It means the world to me.", animationType }: Ty001Props) {
   const envelopeTheme = {
     coverBg: "bg-gradient-to-br from-[#2d5a57] via-teal-700 to-teal-800",
     borderColor: "border-teal-600/40",
@@ -29,7 +29,7 @@ export default function Ty001({
   };
 
   return (
-    <CardEnvelope
+    <PresentationWrapper animationType={animationType}
       theme={envelopeTheme}
       className="max-w-[400px] mx-auto aspect-[4/5]"
     >
@@ -92,6 +92,6 @@ export default function Ty001({
         <div className="absolute top-0 left-0 w-24 h-24 bg-gradient-to-br from-teal-50 to-transparent rounded-br-[4rem] -z-0 opacity-80" />
         <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-teal-50 to-transparent rounded-tl-[4rem] -z-0 opacity-80" />
       </div>
-    </CardEnvelope>
+    </PresentationWrapper>
   );
 }

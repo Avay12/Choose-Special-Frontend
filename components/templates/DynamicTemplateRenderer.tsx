@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Gift } from "lucide-react";
-import CardEnvelope from "./CardEnvelope";
+import PresentationWrapper from "./PresentationWrapper";
 
 type DynamicTemplateRendererProps = {
   templateName: string;
@@ -86,7 +86,7 @@ export default function DynamicTemplateRenderer({
   };
 
   return (
-    <CardEnvelope theme={envelopeTheme} className="w-full h-full min-h-[520px] rounded-[3rem]">
+    <PresentationWrapper animationType={data?.animationType} theme={envelopeTheme} className="w-full h-full min-h-[520px] rounded-[3rem]">
       <div
         className="w-full h-full min-h-[520px] rounded-[3rem] border-8 border-white/80 overflow-hidden relative text-slate-900"
         style={{ background: palette.bg }}
@@ -143,6 +143,6 @@ export default function DynamicTemplateRenderer({
           </motion.div>
         </div>
       </div>
-    </CardEnvelope>
+    </PresentationWrapper>
   );
 }

@@ -2,17 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { Heart, Stars } from "lucide-react";
-import CardEnvelope from "../CardEnvelope";
+import PresentationWrapper from "../PresentationWrapper";
 
 interface Val001Props {
   name?: string;
   message?: string;
+  animationType?: string;
 }
 
 export default function Val001({
   name = "Beloved",
-  message = "You're the center of my world, the highlight of my day, and the love of my life. Happy Valentine's Day.",
-}: Val001Props) {
+  message = "You're the center of my world, the highlight of my day, and the love of my life. Happy Valentine's Day.", animationType }: Val001Props) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function Val001({
   };
 
   return (
-    <CardEnvelope theme={envelopeTheme} className="max-w-[400px] mx-auto aspect-[4/5]">
+    <PresentationWrapper animationType={animationType} theme={envelopeTheme} className="max-w-[400px] mx-auto aspect-[4/5]">
       <div className="w-full h-full bg-gradient-to-br from-rose-50 to-pink-100 rounded-[3rem] border border-rose-100 overflow-hidden relative group p-12 text-center flex flex-col items-center justify-center gap-12">
         {/* Dynamic Floating Hearts background */}
         <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
@@ -85,6 +85,6 @@ export default function Val001({
         <div className="absolute top-0 right-0 w-32 h-32 border-t-8 border-r-8 border-rose-200/50 rounded-tr-[3rem] -z-0" />
         <div className="absolute bottom-0 left-0 w-32 h-32 border-b-8 border-l-8 border-rose-200/50 rounded-bl-[3rem] -z-0" />
       </div>
-    </CardEnvelope>
+    </PresentationWrapper>
   );
 }

@@ -1,17 +1,17 @@
 "use client";
 
 import { Flower2, Wind, Heart } from "lucide-react";
-import CardEnvelope from "../CardEnvelope";
+import PresentationWrapper from "../PresentationWrapper";
 
 interface Symp001Props {
   name?: string;
   message?: string;
+  animationType?: string;
 }
 
 export default function Symp001({
   name = "Recipient",
-  message = "Wishing you strength and comfort during this difficult time. Please know that you are in our thoughts and hearts.",
-}: Symp001Props) {
+  message = "Wishing you strength and comfort during this difficult time. Please know that you are in our thoughts and hearts.", animationType }: Symp001Props) {
   const envelopeTheme = {
     coverBg: "bg-gradient-to-br from-slate-100 via-zinc-100 to-slate-200",
     borderColor: "border-slate-200/50",
@@ -24,7 +24,7 @@ export default function Symp001({
   };
 
   return (
-    <CardEnvelope
+    <PresentationWrapper animationType={animationType}
       theme={envelopeTheme}
       className="max-w-[400px] mx-auto min-h-[580px]"
     >
@@ -79,6 +79,6 @@ export default function Symp001({
         <div className="absolute top-0 right-0 w-32 h-32 bg-[#fafafa] rounded-bl-[4rem] -z-10" />
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#fafafa] rounded-tr-[4rem] -z-10" />
       </div>
-    </CardEnvelope>
+    </PresentationWrapper>
   );
 }

@@ -46,6 +46,7 @@ import { BACKGROUND_SCENES } from "@/lib/data/backgrounds";
 import { SceneBackground } from "@/components/templates/SceneBackground";
 import { useTemplates } from "@/lib/hooks/useTemplates";
 import DynamicTemplateRenderer from "@/components/templates/DynamicTemplateRenderer";
+import AnimationPicker, { ANIMATION_OPTIONS } from "@/components/templates/AnimationPicker";
 
 // ─── Pricing add-ons (mirrors backend GetCardPricing) ───────────────────────
 const MUSIC_TRACK_ADDON = 1.0;    // preset music track
@@ -416,6 +417,13 @@ export default function GenerateLinkPage() {
   // ── Computed price (base + audio add-ons) ──────────────────────────────────
   const computedPrice = useMemo(() => {
     let price = selectedProduct?.price || 0;
+    
+    // Add Animation Price
+    const animObj = ANIMATION_OPTIONS.find(a => a.id === (customData.animationType || "envelope"));
+    if (animObj) {
+      price += animObj.price;
+    }
+
     if (customData.audioUrl) {
       // audioTrackName is set for preset tracks; absent for user-uploaded recordings
       if (customData.audioTrackName) {
@@ -425,7 +433,7 @@ export default function GenerateLinkPage() {
       }
     }
     return price;
-  }, [selectedProduct, customData.audioUrl, customData.audioTrackName]);
+  }, [selectedProduct, customData.audioUrl, customData.audioTrackName, customData.animationType]);
 
   const canAfford = !!user && user.credit >= computedPrice;
   const shortfall = Math.max(0, computedPrice - (user?.credit || 0));
@@ -722,6 +730,14 @@ export default function GenerateLinkPage() {
                         />
                       </div>
 
+                      {/* Animation section */}
+                      <div className="pt-4 border-t border-border">
+                        <AnimationPicker
+                          value={customData.animationType || "envelope"}
+                          onChange={(val) => handleInputChange("animationType", val)}
+                        />
+                      </div>
+
                       {/* Audio section */}
                       <div className="pt-4 border-t border-border">
                         <AudioPicker
@@ -768,9 +784,20 @@ export default function GenerateLinkPage() {
                 </p>
               </div>
               {/* Add-on badges */}
-              {customData.audioUrl && (
-                <div className="flex flex-col gap-1.5 mt-1">
-                  {customData.audioTrackName ? (
+              <div className="flex flex-col gap-1.5 mt-1">
+                {customData.animationType && customData.animationType !== "envelope" && (() => {
+                  const anim = ANIMATION_OPTIONS.find(a => a.id === customData.animationType);
+                  if (anim && anim.price > 0) {
+                     return (
+                       <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 text-blue-600 text-xs font-bold border border-blue-500/20">
+                         {anim.icon} {anim.name} +${anim.price.toFixed(2)}
+                       </span>
+                     );
+                  }
+                  return null;
+                })()}
+                {customData.audioUrl && (
+                  customData.audioTrackName ? (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 text-violet-600 text-xs font-bold border border-violet-500/20">
                       <Music className="w-3 h-3" /> Music +${MUSIC_TRACK_ADDON.toFixed(2)}
                     </span>
@@ -778,9 +805,9 @@ export default function GenerateLinkPage() {
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 text-orange-600 text-xs font-bold border border-orange-500/20">
                       <Mic className="w-3 h-3" /> Voice +${VOICE_RECORDING_ADDON.toFixed(2)}
                     </span>
-                  )}
-                </div>
-              )}
+                  )
+                )}
+              </div>
             </div>
 
             {/* ── Wallet balance indicator ──────────────────────────────── */}

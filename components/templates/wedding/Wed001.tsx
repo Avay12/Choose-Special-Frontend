@@ -1,7 +1,7 @@
 "use client";
 
 import { Gem, MapPin, Calendar, Clock } from "lucide-react";
-import CardEnvelope from "../CardEnvelope";
+import PresentationWrapper from "../PresentationWrapper";
 
 interface Wed001Props {
   names?: string;
@@ -10,6 +10,7 @@ interface Wed001Props {
   location?: string;
   venue?: string;
   city?: string;
+  animationType?: string;
 }
 
 export default function Wed001({
@@ -18,8 +19,7 @@ export default function Wed001({
   time = "4:00 PM",
   location = "Elmwood Manor",
   venue = "The Gardens",
-  city = "Oakwood, CT",
-}: Wed001Props) {
+  city = "Oakwood, CT", animationType }: Wed001Props) {
   const envelopeTheme = {
     coverBg: "bg-gradient-to-br from-stone-50 via-[#fafafa] to-slate-100",
     borderColor: "border-slate-200/50",
@@ -32,7 +32,7 @@ export default function Wed001({
   };
 
   return (
-    <CardEnvelope theme={envelopeTheme} className="max-w-[420px] mx-auto min-h-[580px]">
+    <PresentationWrapper animationType={animationType} theme={envelopeTheme} className="max-w-[420px] mx-auto min-h-[580px]">
       <div className="w-full h-full bg-[#fafafa] rounded-[1rem] border border-slate-200 overflow-hidden relative group p-12 text-center flex flex-col items-center justify-between">
         {/* Decorative sophisticated linear pattern top & bottom */}
         <div className="absolute top-0 inset-x-0 h-16 pointer-events-none p-4 opacity-10">
@@ -115,6 +115,6 @@ export default function Wed001({
         <div className="absolute top-0 left-0 w-24 h-24 border-l border-t border-slate-100 rounded-tl-xl -z-0" />
         <div className="absolute bottom-0 right-0 w-24 h-24 border-r border-b border-slate-100 rounded-br-xl -z-0" />
       </div>
-    </CardEnvelope>
+    </PresentationWrapper>
   );
 }
